@@ -9,8 +9,11 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
 import 'dotenv/config';
-import BaseRouter from './routes';
+import router from './routes';
+import { sequelize } from './models';
+
 const app: Application = express();
+sequelize.sync();
 
 // TODO: Set Port 8080
 app.set('port', process.env.PORT || 8001);
@@ -53,7 +56,7 @@ app.get(
     res.send('HOLLYSHIP')
 );
 
-app.use('/api', BaseRouter);
+app.use('/api', router);
 
 // TODO: Catch 404 handler
 app.use((req: Request, res: Response, next: NextFunction): void => {
