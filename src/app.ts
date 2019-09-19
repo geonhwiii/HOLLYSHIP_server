@@ -1,4 +1,3 @@
-require('dotenv');
 import express, {
   Application,
   Request,
@@ -8,38 +7,63 @@ import express, {
 } from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import path from 'path';
 import expressSession from 'express-session';
-
+import 'dotenv/config';
+import BaseRouter from './routes';
 const app: Application = express();
 
+// TODO: Set Port 8080
+app.set('port', process.env.PORT || 8001);
+
+// TODO: Use Middleware
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(
+  expressSession({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false
+    }
+  })
+);
 
 interface Err extends Error {
   status: number;
   data?: any;
 }
 
-// TODO: Set Port 3000
-app.set('port', process.env.PORT || 8080);
+// TODO: Prevent CORS Error
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Expose-Headers', 'x-total-count');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,authorization');
+  next();
+});
 
 // TODO:  GET '/'
-app.get('/', (req: Request, res: Response, next: NextFunction) =>
-  res.send('HOLLYSHIP')
+app.get(
+  '/',
+  (req: Request, res: Response, next: NextFunction): Response =>
+    res.send('HOLLYSHIP')
 );
 
+app.use('/api', BaseRouter);
+
 // TODO: Catch 404 handler
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction): void => {
   const err = new Error('Not Found...') as Err;
   err.status = 403;
   next(err);
 });
 
 // TODO: Handle Error
-app.use((err: Err, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Err, req: Request, res: Response, next: NextFunction): void => {
   res.status(err.status || 500);
   res.json({
     message: err.message,
