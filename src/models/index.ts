@@ -1,48 +1,22 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
-
+import { Sequelize } from 'sequelize-typescript';
+import { User } from './User';
 const env = process.env.NODE_ENV || 'development';
-const config = require('../../config')[env];
+const config = require('../../config/config')[env];
 
-const sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  config
-);
+const { username, password, database, dialect, host } = config;
 
-class User extends Model {
-  public id!: number;
-  public userId!: string;
-  public name!: string;
-  public password!: string;
+// TODO: Connect to MySQL
+export const sequelize = new Sequelize({
+  username,
+  password,
+  database,
+  dialect,
+  host,
+  models: [User]
+});
 
-  // timestamps!
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-}
-
-User.init(
-  {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    userId: {
-      type: new DataTypes.STRING(128),
-      allowNull: false
-    },
-    name: {
-      type: new DataTypes.STRING(128),
-      allowNull: false
-    },
-    password: {
-      type: new DataTypes.STRING(128),
-      allowNull: false
-    }
-  },
-  {
-    tableName: 'users',
-    sequelize
-  }
-);
+// TODO: Check connection
+sequelize
+  .authenticate()
+  .then(() => console.log('Connection Successed!'))
+  .catch((err: Error) => console.error('Unable to connect to the MySQL', err));
