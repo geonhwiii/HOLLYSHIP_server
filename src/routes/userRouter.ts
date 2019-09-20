@@ -22,14 +22,15 @@ userRouter.get('/:id', (req: Request, res: Response, next: NextFunction) =>
 );
 
 /******************************************************************************
- * ?                     POST User - "GET /api/user"
+ * ?                     POST User - "POST /api/user/signup"
  ******************************************************************************/
 userRouter.post(
-  '/',
+  '/signup',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const account = await User.create({
         userId: req.body.userId,
+        name: req.body.name,
         password: req.body.password
       });
       res.json(account);
