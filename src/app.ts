@@ -8,12 +8,15 @@ import express, {
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
+import passport from 'passport';
 import 'dotenv/config';
 import router from './routes';
 import { sequelize } from './models';
+import passportConfig from './passport';
 
 const app: Application = express();
 sequelize.sync();
+passportConfig(passport);
 
 // TODO: Set Port 8080
 app.set('port', process.env.PORT || 8001);
@@ -34,6 +37,8 @@ app.use(
     }
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 interface Err extends Error {
   status: number;
@@ -49,14 +54,14 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// TODO:  GET '/'
+// TODO:  GET '/holly'
 app.get(
-  '/',
+  '/holly',
   (req: Request, res: Response, next: NextFunction): Response =>
     res.send('HOLLYSHIP')
 );
 
-app.use('/api', router);
+app.use('/', router);
 
 // TODO: Catch 404 handler
 app.use((req: Request, res: Response, next: NextFunction): void => {
