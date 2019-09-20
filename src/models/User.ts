@@ -16,7 +16,7 @@ export class User extends Model<User> {
   userId: string;
 
   @AllowNull(false)
-  @Column(DataType.STRING(30))
+  @Column(DataType.STRING(120))
   password: string;
 
   @AllowNull(false)
