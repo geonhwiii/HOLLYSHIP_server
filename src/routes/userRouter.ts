@@ -4,7 +4,7 @@ import { User } from '../models/User';
 const userRouter = Router();
 
 /******************************************************************************
- * ?                      Get ALL User Info - "GET /api/user"
+ * ?                      Get ALL User Info - "GET /user"
  ******************************************************************************/
 userRouter.get('/', (req: Request, res: Response, next: NextFunction) =>
   User.findAll()
@@ -13,32 +13,12 @@ userRouter.get('/', (req: Request, res: Response, next: NextFunction) =>
 );
 
 /******************************************************************************
- * ?                     GET User Info - "GET /api/user/:id"
+ * ?                     GET User Info - "GET /user/:id"
  ******************************************************************************/
 userRouter.get('/:id', (req: Request, res: Response, next: NextFunction) =>
   User.findByPk(req.params.id)
     .then(user => (user ? res.json(user) : next({ statusCode: 404 })))
     .catch(next)
-);
-
-/******************************************************************************
- * ?                     POST User - "POST /api/user/signup"
- ******************************************************************************/
-userRouter.post(
-  '/signup',
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const account = await User.create({
-        userId: req.body.userId,
-        name: req.body.name,
-        password: req.body.password
-      });
-      res.json(account);
-    } catch (e) {
-      console.log(e.message);
-      res.status(500).send('Server Error');
-    }
-  }
 );
 
 export default userRouter;
