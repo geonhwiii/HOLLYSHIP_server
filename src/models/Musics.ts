@@ -7,7 +7,7 @@ import {
   Unique
 } from 'sequelize-typescript';
 
-// TODO: User Table
+// TODO: Musics Table
 @Table
 export class Musics extends Model<Musics> {
   @AllowNull(false)
