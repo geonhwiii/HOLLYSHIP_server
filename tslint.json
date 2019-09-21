@@ -4,6 +4,8 @@
     "trailing-comma": false,
     "no-duplicate-imports":false,
     "import-name": false,
-    "object-shorthand-properties-first": false
+    "object-shorthand-properties-first": false,
+    "space-before-function-paren": false,
+    "variable-name": false
   }
 }

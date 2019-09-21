@@ -6,10 +6,10 @@ import {
   AllowNull
 } from 'sequelize-typescript';
 
-// TODO: Emotion Table
+// TODO: Emotions Table
 @Table
 export class Emotion extends Model<Emotion> {
   @AllowNull(false)
   @Column(DataType.ENUM('blank', 'happy', 'sad', 'upset', 'chill', 'fear'))
-  emtion: string;
+  emotion: string;
 }

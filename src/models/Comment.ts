@@ -6,7 +6,7 @@ import {
   AllowNull
 } from 'sequelize-typescript';
 
-// TODO: Commnets Table
+// TODO: Comments Table
 @Table
 export class Comment extends Model<Comment> {
   @AllowNull(false)
