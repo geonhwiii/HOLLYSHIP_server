@@ -1,13 +1,18 @@
+import { Post } from './Post';
 import {
   Table,
   Column,
   Model,
   DataType,
   AllowNull,
-  Unique
+  Unique,
+  HasMany,
+  ForeignKey,
+  PrimaryKey,
+  AutoIncrement
 } from 'sequelize-typescript';
 
-// TODO: User Table
+// TODO: Users Table
 @Table
 export class User extends Model<User> {
   @Unique
@@ -30,4 +35,7 @@ export class User extends Model<User> {
   @AllowNull(true)
   @Column(DataType.TEXT)
   intro: string;
+
+  @HasMany(() => Post)
+  posts: Post[];
 }
