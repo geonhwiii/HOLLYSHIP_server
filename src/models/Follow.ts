@@ -4,7 +4,8 @@ import {
   Column,
   Model,
   DataType,
-  ForeignKey
+  ForeignKey,
+  BelongsTo
 } from 'sequelize-typescript';
 
 // TODO: Follow Table
@@ -12,9 +13,16 @@ import {
 export class Follow extends Model<Follow> {
   @ForeignKey(() => User)
   @Column(DataType.INTEGER)
-  fromId: number;
+  followerId: number;
 
   @ForeignKey(() => User)
   @Column(DataType.INTEGER)
-  toId: number;
+  followingId: number;
+
+  /* Follow-User */
+  @BelongsTo(() => User, 'followerId')
+  follower: User;
+
+  @BelongsTo(() => User, 'follwingId')
+  following: User;
 }

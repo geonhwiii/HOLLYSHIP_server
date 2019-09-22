@@ -4,7 +4,6 @@ import {
   Column,
   Model,
   DataType,
-  AllowNull,
   ForeignKey,
   HasMany,
   BelongsTo
@@ -14,9 +13,13 @@ import { User } from './User';
 // TODO: PlayLists Table
 @Table
 export class PlayList extends Model<PlayList> {
-  @Column(DataType.STRING)
-  userId: string;
-
+  @ForeignKey(() => User)
   @Column(DataType.INTEGER)
-  musicId: number;
+  userId: number;
+  /* PlayList-User */
+  @BelongsTo(() => User)
+  user: User;
+
+  @HasMany(() => Musics)
+  musics: Musics[];
 }
