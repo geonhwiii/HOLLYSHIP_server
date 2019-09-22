@@ -1,10 +1,12 @@
+import { PlayList } from './PlayList';
 import {
   Table,
   Column,
   Model,
   DataType,
   AllowNull,
-  Unique
+  ForeignKey,
+  BelongsTo
 } from 'sequelize-typescript';
 
 // TODO: Musics Table
@@ -33,4 +35,11 @@ export class Musics extends Model<Musics> {
   @AllowNull(true)
   @Column(DataType.STRING)
   youtubeUrl: string;
+
+  @ForeignKey(() => PlayList)
+  @Column(DataType.INTEGER)
+  musicId: number;
+  /* Musics-PlayList */
+  @BelongsTo(() => PlayList)
+  playlist: PlayList;
 }

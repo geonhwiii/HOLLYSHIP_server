@@ -1,19 +1,26 @@
+import { UserComment } from './UserComment';
+import { Comment } from './Comment';
+import { Follow } from './Follow';
+import { PlayList } from './PlayList';
+import { Post } from './Post';
 import {
   Table,
   Column,
   Model,
   DataType,
   AllowNull,
-  Unique
+  Unique,
+  HasMany,
+  BelongsToMany
 } from 'sequelize-typescript';
 
-// TODO: User Table
+// TODO: Users Table
 @Table
 export class User extends Model<User> {
   @Unique
   @AllowNull(false)
   @Column(DataType.STRING(30))
-  userId: string;
+  email: string;
 
   @AllowNull(false)
   @Column(DataType.STRING(120))
@@ -21,7 +28,7 @@ export class User extends Model<User> {
 
   @AllowNull(false)
   @Column(DataType.STRING(30))
-  name: string;
+  username: string;
 
   @AllowNull(true)
   @Column(DataType.STRING(120))
@@ -30,4 +37,24 @@ export class User extends Model<User> {
   @AllowNull(true)
   @Column(DataType.TEXT)
   intro: string;
+
+  /* User-Follow #1 */
+  @HasMany(() => Follow, 'followingId')
+  followers: Follow[];
+
+  /* User-Follow #2 */
+  @HasMany(() => Follow, 'followerId')
+  following: Follow[];
+
+  /* User-Post */
+  @HasMany(() => Post)
+  posts: Post[];
+
+  /* User-PlayList */
+  @HasMany(() => PlayList)
+  playlists: PlayList[];
+
+  /* User-Comment */
+  @BelongsToMany(() => Comment, () => UserComment)
+  comments: Comment[];
 }

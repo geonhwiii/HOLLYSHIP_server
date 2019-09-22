@@ -13,14 +13,14 @@ authRouter.post(
   '/signup',
   isNotLoggedIn,
   async (req: Request, res: Response, next: NextFunction) => {
-    const { userId, name, password } = req.body;
+    const { email, username, password } = req.body;
     try {
-      const existAccount = await User.findOne({ where: { userId } });
+      const existAccount = await User.findOne({ where: { email } });
       if (existAccount) {
-        res.status(304).send('Aleady Exist UserId');
+        res.status(304).send('Aleady Exist email');
       }
       const hash = await bcrypt.hash(password, 12);
-      const account = await User.create({ userId, name, password: hash });
+      const account = await User.create({ email, username, password: hash });
       res.json(account);
     } catch (e) {
       console.log(e.message);
