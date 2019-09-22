@@ -6,19 +6,19 @@ export default class Local {
   public static init(_passport: any) {
     _passport.use(
       new Strategy(
-        { usernameField: 'userId', passwordField: 'password' },
-        async (userId: string, password: string, done: Function) => {
+        { usernameField: 'email', passwordField: 'password' },
+        async (email: string, password: string, done: Function) => {
           try {
-            const account = await User.findOne({ where: { userId } });
+            const account = await User.findOne({ where: { email } });
             if (account) {
               const result = await bcrypt.compare(password, account.password);
               if (result) {
                 done(null, account);
               } else {
-                done(null, false, { message: 'Undefined UserId or Password' });
+                done(null, false, { message: 'Undefined email or Password' });
               }
             } else {
-              done(null, false, { message: 'Undefined UserId or Password' });
+              done(null, false, { message: 'Undefined email or Password' });
             }
           } catch (err) {
             console.error(err);
