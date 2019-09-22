@@ -1,3 +1,6 @@
+import { UserComment } from './UserComment';
+import { Follow } from './Follow';
+import { PlayList } from './PlayList';
 import { Comment } from './Comment';
 import { Musics } from './Musics';
 import { Post } from './Post';
@@ -16,7 +19,7 @@ export const sequelize = new Sequelize({
   database,
   dialect,
   host,
-  models: [User, Post, Musics, Emotion, Comment]
+  models: [User, Post, Musics, Emotion, Comment, PlayList, Follow, UserComment]
 });
 
 // TODO: Check connection
