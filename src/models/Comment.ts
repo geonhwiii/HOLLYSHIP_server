@@ -1,4 +1,3 @@
-import { Emotion } from './Emotion';
 import { Post } from './Post';
 import { UserComment } from './UserComment';
 import { User } from './User';
@@ -35,12 +34,4 @@ export class Comment extends Model<Comment> {
 
   @BelongsTo(() => Post)
   post: Post;
-
-  /* Comment-Emotion */
-  @ForeignKey(() => Emotion)
-  @Column(DataType.INTEGER)
-  emotionId: number;
-
-  @BelongsTo(() => Emotion)
-  emotion: Emotion;
 }

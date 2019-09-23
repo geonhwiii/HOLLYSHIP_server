@@ -6,7 +6,6 @@ import { Musics } from './Musics';
 import { Post } from './Post';
 import { Sequelize } from 'sequelize-typescript';
 import { User } from './User';
-import { Emotion } from './Emotion';
 const env = process.env.NODE_ENV || 'development';
 const config = require('../../config/config')[env];
 
@@ -19,7 +18,7 @@ export const sequelize = new Sequelize({
   database,
   dialect,
   host,
-  models: [User, Post, Musics, Emotion, Comment, PlayList, Follow, UserComment]
+  models: [User, Post, Musics, Comment, PlayList, Follow, UserComment]
 });
 
 // TODO: Check connection
