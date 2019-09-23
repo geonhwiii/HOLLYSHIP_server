@@ -11,17 +11,22 @@ postRouter.get('/', async (req, res) => {
   const posts = await Post.findAll({
     include: [{ model: User, attributes: ['email', 'username', 'userImage'] }]
   });
-  return res.json(posts);
+  res.json(posts);
 });
 
 /******************************************************************************
  * ?                      Get Posts by id Info - "GET /post/:id"
  ******************************************************************************/
 postRouter.get('/:id', async (req, res) => {
-  const posts = Post.findByPk(req.params.id, {
-    include: [{ model: User, attributes: ['email', 'username', 'userImage'] }]
-  });
-  return res.json(posts);
+  try {
+    const posts = await Post.findByPk(req.params.id, {
+      include: [{ model: User, attributes: ['email', 'username', 'userImage'] }]
+    });
+    res.json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500);
+  }
 });
 
 /******************************************************************************
@@ -30,12 +35,12 @@ postRouter.get('/:id', async (req, res) => {
 postRouter.post('/', async (req, res) => {
   try {
     const userId = req.session.passport.user;
-    const { title, content } = req.body;
-    const post = await Post.create({ userId, title, content });
-    res.json(post);
+    const { title, content, emotion } = req.body;
+    const post = await Post.create({ userId, title, content, emotion });
+    return res.json(post);
   } catch (err) {
     console.error(err);
-    res.status(500).send('SERVER ERROR');
+    return res.status(500).send('SERVER ERROR');
   }
 });
 
@@ -52,15 +57,15 @@ postRouter.patch('/:id', async (req, res) => {
     if (currentUserId !== postUser.userId) {
       return res.status(304).send('User Info not match!');
     }
-    const { title, content } = req.body;
+    const { title, content, emotion } = req.body;
     const updatedPost = await Post.update(
-      { title, content },
+      { title, content, emotion },
       { where: { id: req.params.id } }
     );
-    res.send('POST UPDATED!');
+    return res.send('POST UPDATED!');
   } catch (err) {
     console.error(err);
-    res.status(500).send('SERVER ERROR');
+    return res.status(500).send('SERVER ERROR');
   }
 });
 
