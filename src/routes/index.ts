@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import userRouter from './userRouter';
 import authRouter from './authRouter';
 import postRouter from './postRouter';
+import emotionRouter from './emotionRouter';
 const router = Router();
 
 /******************************************************************************
@@ -14,5 +15,6 @@ router.get('/', (req: Request, res: Response) => {
 router.use('/user', userRouter);
 router.use('/auth', authRouter);
 router.use('/post', postRouter);
+router.use('/emoji', emotionRouter);
 
 export default router;

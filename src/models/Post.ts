@@ -1,4 +1,3 @@
-import { Emotion } from './Emotion';
 import { Comment } from './Comment';
 import { User } from './User';
 import {
@@ -9,12 +8,20 @@ import {
   AllowNull,
   ForeignKey,
   BelongsTo,
-  HasMany
+  HasMany,
+  PrimaryKey,
+  AutoIncrement
 } from 'sequelize-typescript';
 
 // TODO: Post Table
 @Table
 export class Post extends Model<Post> {
+  @PrimaryKey
+  @AutoIncrement
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  id: number;
+
   @AllowNull(false)
   @Column(DataType.STRING(120))
   title: string;
@@ -35,11 +42,8 @@ export class Post extends Model<Post> {
   @HasMany(() => Comment)
   comments: Comment[];
 
-  /* Post-Emotion */
-  @ForeignKey(() => Emotion)
-  @Column(DataType.INTEGER)
-  emotionId: number;
-
-  @BelongsTo(() => Emotion)
-  emotion: Emotion;
+  /* Emotion */
+  @AllowNull(false)
+  @Column(DataType.ENUM('blank', 'happy', 'sad', 'upset', 'chill', 'fear'))
+  emotion: string;
 }
