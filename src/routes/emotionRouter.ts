@@ -6,7 +6,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 const emotionRouter = Router();
 
 /******************************************************************************
- * ?                      Get ALL User Info - "GET /user"
+ * ?                      Get ALL Emotion Info - "GET /emoji"
  ******************************************************************************/
 emotionRouter.get(
   '/:emoji',
