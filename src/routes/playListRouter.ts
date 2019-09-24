@@ -1,0 +1,85 @@
+import { Musics } from './../models/Musics';
+import { PlayList } from './../models/PlayList';
+import { Router, Request, Response } from 'express';
+
+const playListRouter = Router();
+
+/******************************************************************************
+ * ?                   GET ALL PlayList - "GET /list/"
+ ******************************************************************************/
+playListRouter.get('/', async (req: Request, res: Response) => {
+  try {
+    const userId = req.session.passport.user;
+    const lists = await PlayList.findAll({
+      where: { userId },
+      attributes: ['id', 'listName']
+    });
+    res.json(lists);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('SERVER ERROR');
+  }
+});
+
+/******************************************************************************
+ * ?          GET musics in playlist  - "GET /list/:id/music"
+ ******************************************************************************/
+playListRouter.get('/:id/music', async (req: Request, res: Response) => {
+  try {
+    const userId = req.session.passport.user;
+    const listId = req.params.id;
+    const musics = await PlayList.findAll({
+      where: { id: listId, userId },
+      include: [
+        {
+          model: Musics,
+          attributes: [
+            'id',
+            'title',
+            'thumbnail',
+            'artist',
+            'playTime',
+            'genre'
+          ]
+        }
+      ]
+    });
+    res.json(musics);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('SERVER ERROR');
+  }
+});
+
+/******************************************************************************
+ * ?                     POST Add PlayList - "POST /list/add"
+ ******************************************************************************/
+playListRouter.post('/add', async (req: Request, res: Response) => {
+  try {
+    const userId = req.session.passport.user;
+    const { listName } = req.body;
+    const list = await PlayList.create({ userId, listName });
+    res.json(list);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('SERVER ERROR');
+  }
+});
+
+/******************************************************************************
+ * ?               DELETE Delete a PlayList - "DELETE /list/:id"
+ ******************************************************************************/
+playListRouter.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    const userId = req.session.passport.user;
+    await PlayList.destroy({
+      where: { id: req.params.id, userId }
+    });
+    res.send('LIST DELETED');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('SERVER ERROR');
+  }
+});
+
+export default playListRouter;
