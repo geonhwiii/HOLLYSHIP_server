@@ -1,3 +1,4 @@
+import { MusicPlayList } from './../models/MusicPlayList';
 import { Musics } from './../models/Musics';
 import { Router, Request, Response } from 'express';
 
@@ -49,6 +50,23 @@ musicRouter.post('/', async (req: Request, res: Response) => {
       youtubeUrl
     });
     res.json(music);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('SERVER ERROR');
+  }
+});
+
+/******************************************************************************
+ * ?           POST Add music in PlayList - "POST /music/:id/list"
+ ******************************************************************************/
+musicRouter.post('/:id/list', async (req: Request, res: Response) => {
+  try {
+    const { playlistId } = req.body;
+    const musicInList = await MusicPlayList.create({
+      musicId: req.params.id,
+      playlistId
+    });
+    res.json(musicInList);
   } catch (err) {
     console.error(err);
     res.status(500).send('SERVER ERROR');
