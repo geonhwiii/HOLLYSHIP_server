@@ -18,6 +18,7 @@ authRouter.post(
       const existAccount = await User.findOne({ where: { email } });
       if (existAccount) {
         res.status(304).send('Aleady Exist email');
+        return;
       }
       const hash = await bcrypt.hash(password, 12);
       const account = await User.create({ email, username, password: hash });
@@ -43,11 +44,13 @@ authRouter.post(
       }
       if (!user) {
         res.status(403).send(info.message);
+        return;
       }
       return req.login(user, (loginError: Error) => {
         if (loginError) {
           console.error(loginError);
           res.status(403).send(loginError);
+          return;
         }
         res.send(user);
       });
