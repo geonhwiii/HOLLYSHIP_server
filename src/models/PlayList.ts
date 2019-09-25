@@ -1,3 +1,4 @@
+import { MusicPlayList } from './MusicPlayList';
 import { Musics } from './Musics';
 import {
   Table,
@@ -6,7 +7,9 @@ import {
   DataType,
   ForeignKey,
   HasMany,
-  BelongsTo
+  BelongsTo,
+  AllowNull,
+  BelongsToMany
 } from 'sequelize-typescript';
 import { User } from './User';
 
@@ -14,12 +17,19 @@ import { User } from './User';
 @Table
 export class PlayList extends Model<PlayList> {
   @ForeignKey(() => User)
+  @AllowNull(false)
   @Column(DataType.INTEGER)
   userId: number;
+
+  @AllowNull(false)
+  @Column(DataType.TEXT)
+  listName: string;
+
   /* PlayList-User */
   @BelongsTo(() => User)
   user: User;
 
-  @HasMany(() => Musics)
+  /* PlayList-Musics */
+  @BelongsToMany(() => Musics, () => MusicPlayList)
   musics: Musics[];
 }
