@@ -22,7 +22,7 @@ authRouter.post(
       }
       const hash = await bcrypt.hash(password, 12);
       const account = await User.create({ email, username, password: hash });
-      res.json(account);
+      res.json({ message: 'USER SIGNUP SUCCESS!', account });
     } catch (e) {
       console.log(e.message);
       res.status(500).send('Server Error');
@@ -52,7 +52,7 @@ authRouter.post(
           res.status(403).send(loginError);
           return;
         }
-        res.send(user);
+        res.json({ message: 'USER LOGIN SUCCESS!' });
       });
     })(req, res, next);
   }
@@ -63,7 +63,7 @@ authRouter.get('/logout', isLoggedIn, (req: Request, res: Response) => {
   req.session.destroy((err: Error) => {
     if (err) res.sendStatus(500);
   });
-  res.send('Logout success');
+  res.json('LOGOUT SUCCESS');
 });
 
 export default authRouter;
