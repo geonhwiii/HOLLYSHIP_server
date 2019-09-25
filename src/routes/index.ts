@@ -5,6 +5,7 @@ import postRouter from './postRouter';
 import emotionRouter from './emotionRouter';
 import musicRouter from './musicRouter';
 import playListRouter from './playListRouter';
+import followRouter from './followRouter';
 const router = Router();
 
 /******************************************************************************
@@ -20,5 +21,6 @@ router.use('/post', postRouter);
 router.use('/emoji', emotionRouter);
 router.use('/music', musicRouter);
 router.use('/list', playListRouter);
+router.use('/follow', followRouter);
 
 export default router;
