@@ -40,6 +40,9 @@ commentRouter.post(
       const commentUsername = user.username;
       // TODO: Create Comment table
       const { comment, postId } = req.body;
+      if (!comment) {
+        return res.status(403).json({ message: 'Comment cannot be null!' });
+      }
       const com = await Comment.create({ comment, postId, commentUsername });
       // TODO: Create Usercommnet table
       const commentId = com.id;

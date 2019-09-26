@@ -82,7 +82,7 @@ musicRouter.post(
         genre,
         youtubeUrl
       });
-      res.json(music);
+      res.json({ message: 'MUSIC POST SUCCESS', music});
     } catch (err) {
       console.error(err);
       res.status(500).send('SERVER ERROR');
@@ -103,7 +103,7 @@ musicRouter.post(
         musicId: req.params.id,
         playlistId
       });
-      res.json(musicInList);
+      res.json({ message: 'Add music in playlist',musicInList});
     } catch (err) {
       console.error(err);
       next(err);

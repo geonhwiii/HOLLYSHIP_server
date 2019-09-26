@@ -58,8 +58,11 @@ playListRouter.post('/add', async (req: Request, res: Response) => {
   try {
     const userId = req.session.passport.user;
     const { listName } = req.body;
+    if (!listName) {
+      return res.status(409).json({ message: 'Should post listName!' });
+    }
     const list = await PlayList.create({ userId, listName });
-    res.json(list);
+    res.json({ message: 'Add a playlist', list });
   } catch (err) {
     console.error(err);
     res.status(500).send('SERVER ERROR');
