@@ -1,3 +1,4 @@
+import { UserPostLike } from './../models/UserPostLike';
 import { Comment } from './../models/Comment';
 import { User } from './../models/User';
 import { Post } from './../models/Post';
@@ -12,8 +13,16 @@ postRouter.get('/', async (req, res) => {
   // TODO: Find all Post with User & Comment data
   const posts = await Post.findAll({
     include: [
-      { model: User, attributes: ['email', 'username', 'userImage'] },
-      { model: Comment, attributes: ['comment', 'commentUsername'] }
+      {
+        model: User,
+        attributes: ['email', 'username', 'userImage']
+      },
+      { model: Comment, attributes: ['comment', 'commentUsername'] },
+      {
+        model: UserPostLike,
+        attributes: ['id', 'userId'],
+        include: [{ model: User, attributes: ['email', 'username'] }]
+      }
     ]
   });
   res.json(posts);
@@ -27,8 +36,16 @@ postRouter.get('/:id', async (req, res) => {
     // TODO: Find a Post with User & Comment data
     const posts = await Post.findByPk(req.params.id, {
       include: [
-        { model: User, attributes: ['email', 'username', 'userImage'] },
-        { model: Comment, attributes: ['comment', 'commentUsername'] }
+        {
+          model: User,
+          attributes: ['email', 'username', 'userImage']
+        },
+        { model: Comment, attributes: ['comment', 'commentUsername'] },
+        {
+          model: UserPostLike,
+          attributes: ['id', 'userId'],
+          include: [{ model: User, attributes: ['email', 'username'] }]
+        }
       ]
     });
     res.json(posts);
@@ -48,6 +65,22 @@ postRouter.post('/', async (req, res) => {
     // TODO: Create Post table
     const post = await Post.create({ userId, title, content, emotion });
     return res.json(post);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('SERVER ERROR');
+  }
+});
+
+/******************************************************************************
+ * ?                      POST Like Post - "POST /post/:id/like"
+ ******************************************************************************/
+postRouter.post('/:id/like', async (req, res) => {
+  try {
+    const userId = req.session.passport.user;
+    const postId = req.params.id;
+    // TODO: Create Post table
+    const post = await UserPostLike.create({ userId, postId });
+    return res.json({ message: 'LIKE POST!', post });
   } catch (err) {
     console.error(err);
     return res.status(500).send('SERVER ERROR');

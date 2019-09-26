@@ -1,3 +1,5 @@
+import { UserPostLike } from './../models/UserPostLike';
+import { Post } from './../models/Post';
 import { Musics } from './../models/Musics';
 import { Router, Request, Response, NextFunction } from 'express';
 import { User } from '../models/User';
@@ -12,7 +14,15 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     // TODO: Find All User Info with Like Musics
     const users = await User.findAll({
       include: [
-        { model: Musics, attributes: ['id', 'title', 'thumbnail', 'artist'] }
+        {
+          model: Musics,
+          attributes: ['id', 'title', 'thumbnail', 'artist']
+        },
+        {
+          model: UserPostLike,
+          attributes: ['id', 'postId'],
+          include: [{ model: Post, attributes: ['title'] }]
+        }
       ]
     });
     res.json(users);
@@ -32,7 +42,12 @@ userRouter.get(
       // TODO: Find a User Info with Like Musics
       const user = await User.findByPk(req.params.id, {
         include: [
-          { model: Musics, attributes: ['id', 'title', 'thumbnail', 'artist'] }
+          { model: Musics, attributes: ['id', 'title', 'thumbnail', 'artist'] },
+          {
+            model: UserPostLike,
+            attributes: ['id', 'postId'],
+            include: [{ model: Post, attributes: ['title', 'createAt'] }]
+          }
         ]
       });
       res.json(user);
