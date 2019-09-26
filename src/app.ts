@@ -22,7 +22,11 @@ passportConfig(passport);
 app.set('port', process.env.PORT || 8001);
 
 // TODO: Use Middleware
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+} else {
+  app.use(morgan('dev'));
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
