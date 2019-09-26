@@ -25,47 +25,27 @@ yarn install
 ```
 
 3. Create .env file
-```
-PORT=8000
-NODE_ENV=production
-COOKIE_SECRET=hollyship_secret
-```
+### message me
+g01063962671@gmail.com
 
 4. Create config/config.json file
-```json
-// config.json
-{
-  "development": {
-    "username": "root",
-    "password": "0000",
-    "database": "hollyship",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "production": {
-    "username": "admin",
-    "password": "1q2w3e4r",
-    "database": "hollyship",
-    "host": "db-hollyship.cv9ff3ss49u5.ap-northeast-2.rds.amazonaws.com",
-    "dialect": "mysql",
-    "pool": {
-      "maxConnections": 5,
-      "maxIdleTime": 30
-    }
-  }
-}
+### message me
+g01063962671@gmail.com
 
 ```
 
 5. Start Project
 ```md
-# use npm
-npm run build
-npm run start
-```
+# development
+npm dev
+yarn dev
 
-```md
-# use yarn
+or
+
+# production
+npm run build
 yarn build
+
+npm run start
 yarn start
 ```
