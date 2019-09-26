@@ -18,7 +18,7 @@ const app: Application = express();
 sequelize.sync();
 passportConfig(passport);
 
-// TODO: Set Port 8080
+// TODO: Set Port 8000
 app.set('port', process.env.PORT || 8001);
 
 // TODO: Use Middleware
@@ -26,17 +26,19 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(
-  expressSession({
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.COOKIE_SECRET,
-    cookie: {
-      httpOnly: true,
-      secure: false
-    }
-  })
-);
+const sessionOption = {
+  resave: false,
+  saveUninitialized: false,
+  secret: process.env.COOKIE_SECRET,
+  cookie: {
+    httpOnly: true,
+    secure: false
+  }
+};
+// if (process.env.NODE_ENV === 'production') {
+//   sessionOption.cookie.secure = true;
+// }
+app.use(expressSession(sessionOption));
 app.use(passport.initialize());
 app.use(passport.session());
 
