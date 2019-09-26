@@ -1,3 +1,4 @@
+import { UserMusicsLike } from './UserMusicsLike';
 import { MusicPlayList } from './MusicPlayList';
 import { UserComment } from './UserComment';
 import { Follow } from './Follow';
@@ -27,7 +28,8 @@ export const sequelize = new Sequelize({
     PlayList,
     Follow,
     UserComment,
-    MusicPlayList
+    MusicPlayList,
+    UserMusicsLike
   ]
 });
 

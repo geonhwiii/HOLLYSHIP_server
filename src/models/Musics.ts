@@ -1,3 +1,5 @@
+import { UserMusicsLike } from './UserMusicsLike';
+import { User } from './User';
 import { MusicPlayList } from './MusicPlayList';
 import { PlayList } from './PlayList';
 import {
@@ -41,4 +43,8 @@ export class Musics extends Model<Musics> {
   /* PlayList-Musics */
   @BelongsToMany(() => PlayList, () => MusicPlayList)
   playlists: PlayList[];
+
+  /* Music-User */
+  @BelongsToMany(() => User, () => UserMusicsLike)
+  likeUsers: User[];
 }
