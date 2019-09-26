@@ -1,3 +1,4 @@
+import { UserPostLike } from './UserPostLike';
 import { UserMusicsLike } from './UserMusicsLike';
 import { Musics } from './Musics';
 import { UserComment } from './UserComment';
@@ -52,6 +53,10 @@ export class User extends Model<User> {
   /* User-Post */
   @HasMany(() => Post)
   posts: Post[];
+
+  /* User-PostLike */
+  @HasMany(() => UserPostLike)
+  likePosts: UserPostLike[];
 
   /* User-PlayList */
   @HasMany(() => PlayList)
