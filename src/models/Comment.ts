@@ -19,9 +19,9 @@ export class Comment extends Model<Comment> {
   @Column(DataType.TEXT)
   comment: string;
 
-  @AllowNull(true)
-  @Column(DataType.INTEGER.UNSIGNED)
-  commentLikeCount: number;
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  commentUsername: string;
 
   /* Comment-User */
   @BelongsToMany(() => User, () => UserComment)

@@ -5,7 +5,9 @@ import {
   Column,
   Model,
   DataType,
-  ForeignKey
+  ForeignKey,
+  Default,
+  AllowNull
 } from 'sequelize-typescript';
 
 // TODO: UserComments Table
