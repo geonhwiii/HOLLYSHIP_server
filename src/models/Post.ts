@@ -1,3 +1,4 @@
+import { UserPostLike } from './UserPostLike';
 import { Comment } from './Comment';
 import { User } from './User';
 import {
@@ -42,8 +43,12 @@ export class Post extends Model<Post> {
   @HasMany(() => Comment)
   comments: Comment[];
 
+  /* Post-UserPostLike */
+  @HasMany(() => UserPostLike)
+  likeUsers: [];
+
   /* Emotion */
   @AllowNull(false)
-  @Column(DataType.ENUM('blank', 'happy', 'sad', 'upset', 'chill', 'fear'))
+  @Column(DataType.ENUM('blank', 'happy', 'sad', 'upset', 'chill', 'confused'))
   emotion: string;
 }

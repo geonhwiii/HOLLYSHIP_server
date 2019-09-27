@@ -1,3 +1,6 @@
+import { UserPostLike } from './UserPostLike';
+import { UserMusicsLike } from './UserMusicsLike';
+import { Musics } from './Musics';
 import { UserComment } from './UserComment';
 import { Comment } from './Comment';
 import { Follow } from './Follow';
@@ -51,6 +54,10 @@ export class User extends Model<User> {
   @HasMany(() => Post)
   posts: Post[];
 
+  /* User-PostLike */
+  @HasMany(() => UserPostLike)
+  likePosts: UserPostLike[];
+
   /* User-PlayList */
   @HasMany(() => PlayList)
   playlists: PlayList[];
@@ -58,4 +65,8 @@ export class User extends Model<User> {
   /* User-Comment */
   @BelongsToMany(() => Comment, () => UserComment)
   comments: Comment[];
+
+  /* User-Music */
+  @BelongsToMany(() => Musics, () => UserMusicsLike)
+  likeMusics: Musics[];
 }
