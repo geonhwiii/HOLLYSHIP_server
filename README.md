@@ -43,9 +43,6 @@ yarn dev
 or
 
 # production
-npm run build
-yarn build
-
 npm run start
 yarn start
 ```

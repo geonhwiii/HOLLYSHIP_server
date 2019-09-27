@@ -13,16 +13,20 @@ authRouter.post(
   '/signup',
   isNotLoggedIn,
   async (req: Request, res: Response, next: NextFunction) => {
-    const { email, username, password } = req.body;
     try {
+      const { email, username, password } = req.body;
+      if (!email || !username || !password) {
+        return res
+          .status(409)
+          .json({ message: "email & username & password can't be null" });
+      }
       const existAccount = await User.findOne({ where: { email } });
       if (existAccount) {
-        res.status(304).send('Aleady Exist email');
-        return;
+        return res.status(409).json({ message: 'Aleady Exist email' });
       }
       const hash = await bcrypt.hash(password, 12);
       const account = await User.create({ email, username, password: hash });
-      res.json({ message: 'USER SIGNUP SUCCESS!', account });
+      return res.json({ message: 'USER SIGNUP SUCCESS!', account });
     } catch (e) {
       console.log(e.message);
       res.status(500).send('Server Error');
@@ -63,7 +67,7 @@ authRouter.get('/logout', isLoggedIn, (req: Request, res: Response) => {
   req.session.destroy((err: Error) => {
     if (err) res.sendStatus(500);
   });
-  res.json('LOGOUT SUCCESS');
+  res.json({ message: 'LOGOUT SUCCESS' });
 });
 
 export default authRouter;

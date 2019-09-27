@@ -4,7 +4,7 @@ export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated()) {
     next();
   } else {
-    res.status(403).send('Login Required');
+    res.status(403).json({ message: 'LOGIN REQUIRED!'});
   }
 };
 
@@ -16,6 +16,6 @@ export const isNotLoggedIn = (
   if (!req.isAuthenticated()) {
     next();
   } else {
-    res.status(403).send('Aleady Logged In');
+    res.status(403).json({ message: 'ALREADY LOGGED IN!'});
   }
 };

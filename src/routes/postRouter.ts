@@ -10,22 +10,27 @@ const postRouter = Router();
  * ?                      Get ALL Posts Info - "GET /post/"
  ******************************************************************************/
 postRouter.get('/', async (req, res) => {
-  // TODO: Find all Post with User & Comment data
-  const posts = await Post.findAll({
-    include: [
-      {
-        model: User,
-        attributes: ['email', 'username', 'userImage']
-      },
-      { model: Comment, attributes: ['comment', 'commentUsername'] },
-      {
-        model: UserPostLike,
-        attributes: ['id', 'userId'],
-        include: [{ model: User, attributes: ['email', 'username'] }]
-      }
-    ]
-  });
-  res.json(posts);
+  try {
+    // TODO: Find all Post with User & Comment data
+    const posts = await Post.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['email', 'username', 'userImage']
+        },
+        { model: Comment, attributes: ['comment', 'commentUsername'] },
+        {
+          model: UserPostLike,
+          attributes: ['id', 'userId'],
+          include: [{ model: User, attributes: ['email', 'username'] }]
+        }
+      ]
+    });
+    return res.json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'SERVER ERROR' });
+  }
 });
 
 /******************************************************************************
@@ -48,10 +53,10 @@ postRouter.get('/:id', async (req, res) => {
         }
       ]
     });
-    res.json(posts);
+    return res.json(posts);
   } catch (err) {
     console.error(err);
-    res.status(500);
+    res.status(500).json({ message: 'SERVER ERROR' });
   }
 });
 
@@ -62,12 +67,17 @@ postRouter.post('/', async (req, res) => {
   try {
     const userId = req.session.passport.user;
     const { title, content, emotion } = req.body;
+    if (!title || !content || !emotion) {
+      return res
+        .status(409)
+        .json({ message: "title & content & emotion can't be null!" });
+    }
     // TODO: Create Post table
     const post = await Post.create({ userId, title, content, emotion });
-    return res.json(post);
+    return res.json({ message: 'CREATE POST SUCCESS', post });
   } catch (err) {
     console.error(err);
-    return res.status(500).send('SERVER ERROR');
+    res.status(500).json({ message: 'SERVER ERROR' });
   }
 });
 
@@ -78,12 +88,26 @@ postRouter.post('/:id/like', async (req, res) => {
   try {
     const userId = req.session.passport.user;
     const postId = req.params.id;
+    // TODO: Find Post by userId
+    const postUser = await Post.findOne({
+      attributes: ['userId'],
+      where: { id: postId }
+    });
+    // TODO: Check Current Login User is equal with PostUser
+    if (userId !== postUser.userId) {
+      return res.status(409).json({ message: 'User not match' });
+    }
+    // TODO: Prevent Like more than 1
+    const exUser = await UserPostLike.findOne({ where: { userId, postId } });
+    if (exUser) {
+      return res.status(409).json({ message: 'Cannot like more than 1!' });
+    }
     // TODO: Create Post table
     const post = await UserPostLike.create({ userId, postId });
     return res.json({ message: 'LIKE POST!', post });
   } catch (err) {
     console.error(err);
-    return res.status(500).send('SERVER ERROR');
+    res.status(500).json({ message: 'SERVER ERROR' });
   }
 });
 
@@ -99,7 +123,7 @@ postRouter.patch('/:id', async (req, res) => {
       where: { id: req.params.id }
     });
     if (currentUserId !== postUser.userId) {
-      return res.status(304).send('User Info not match!');
+      return res.status(409).send('User Info not match!');
     }
     const { title, content, emotion } = req.body;
     // TODO: Update Post
@@ -107,10 +131,10 @@ postRouter.patch('/:id', async (req, res) => {
       { title, content, emotion },
       { where: { id: req.params.id } }
     );
-    return res.send('POST UPDATED!');
+    return res.json({ message: 'POST UPDATED!' });
   } catch (err) {
     console.error(err);
-    return res.status(500).send('SERVER ERROR');
+    res.status(500).json({ message: 'SERVER ERROR' });
   }
 });
 
@@ -127,14 +151,33 @@ postRouter.delete('/:id', async (req, res) => {
     });
     // TODO: Check Current Login User is equal with PostUser
     if (currentUserId !== postUser.userId) {
-      return res.status(304).send('User not match');
+      return res.status(409).send('User not match');
     }
     // TODO: Delete Post
     await Post.destroy({ where: { id: req.params.id } });
-    res.send('POST DELETED!');
+    res.json({ message: 'POST DELETED!' });
   } catch (err) {
     console.error(err);
-    res.status(500).send('SERVER ERROR');
+    res.status(500).json({ message: 'SERVER ERROR' });
+  }
+});
+
+/******************************************************************************
+ * ?                      DELETE UnLike Post - "DELETE /post/:id/like"
+ ******************************************************************************/
+postRouter.delete('/:id/like', async (req, res) => {
+  try {
+    const userId = req.session.passport.user;
+    const postId = req.params.id;
+    // TODO: DELETE UserPostLike table
+    const post = await UserPostLike.destroy({ where: { userId, postId } });
+    if (!post) {
+      return res.status(403).json({ message: 'Undefined like in Post' });
+    }
+    return res.json({ message: 'UNLIKE POST!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'SERVER ERROR' });
   }
 });
 
