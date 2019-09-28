@@ -13,7 +13,6 @@ import 'dotenv/config';
 import router from './routes';
 import { sequelize } from './models';
 import passportConfig from './passport';
-import spotifyRouter from './spotify/spotifyRouter';
 
 const app: Application = express();
 sequelize.sync();
@@ -69,7 +68,6 @@ app.get(
 );
 
 app.use('/', router);
-app.use('/spotify', spotifyRouter);
 
 // TODO: Catch 404 handler
 app.use((req: Request, res: Response, next: NextFunction): void => {
