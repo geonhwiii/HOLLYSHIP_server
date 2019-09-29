@@ -2,7 +2,8 @@ import { User } from './../models/User';
 import express, { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
-import { isLoggedIn, isNotLoggedIn } from './middlewares';
+import { isLoggedIn, isNotLoggedIn, verifyToken } from './middlewares';
+import generateToken from '../lib/token';
 
 const authRouter = express.Router();
 
@@ -22,14 +23,15 @@ authRouter.post(
       }
       const existAccount = await User.findOne({ where: { email } });
       if (existAccount) {
-        return res.status(409).json({ message: 'Aleady Exist email' });
+        return res
+          .status(409)
+          .json({ code: 409, message: 'Aleady Exist email' });
       }
       const hash = await bcrypt.hash(password, 12);
       const account = await User.create({ email, username, password: hash });
-      return res.json({ message: 'USER SIGNUP SUCCESS!', account });
+      return res.json({ message: 'USER SIGNUP SUCCESS!' });
     } catch (e) {
-      console.log(e.message);
-      res.status(500).send('Server Error');
+      res.status(500).json({ code: 500, message: 'SERVER ERROR' });
     }
   }
 );
@@ -43,20 +45,25 @@ authRouter.post(
   (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate('local', (authError: Error, user, info) => {
       if (authError) {
-        console.error(authError);
         return next(authError);
       }
       if (!user) {
-        res.status(403).send(info.message);
+        res.status(403).json({ code: 403, message: info.message });
         return;
       }
-      return req.login(user, (loginError: Error) => {
+      return req.login(user, async (loginError: Error) => {
         if (loginError) {
-          console.error(loginError);
-          res.status(403).send(loginError);
+          res.status(403).json({ code: 403, message: loginError });
           return;
         }
-        res.json({ message: 'USER LOGIN SUCCESS!' });
+        // TODO: Generate signed JsonWebToken
+        const payload = {
+          id: user.dataValues.id,
+          email: user.dataValues.email
+        };
+        const token = await generateToken(payload);
+        req.session['access_token'] = token;
+        res.json({ message: 'USER LOGIN SUCCESS with TOKEN!', token });
       });
     })(req, res, next);
   }
@@ -65,7 +72,7 @@ authRouter.post(
 authRouter.get('/logout', isLoggedIn, (req: Request, res: Response) => {
   req.logOut();
   req.session.destroy((err: Error) => {
-    if (err) res.sendStatus(500);
+    if (err) res.status(500).json({ code: 500, message: 'SERVER ERROR' });
   });
   res.json({ message: 'LOGOUT SUCCESS' });
 });
