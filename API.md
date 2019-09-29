@@ -1,9 +1,18 @@
 # API DOCUMENTS
 
+## HOLLYSHIP!
+
+### **[GET]** : `/`
+```json
+# response
+<h1>WELCOME TO THE HOLLSHIP!! DJ DROP THE BEAT!</h1>
+```
+
 ## AUTH
+
 ### **[POST]** : `/auth/signup`
 ```json
-// body
+# body
 {
 	"email": "code@code.com",
 	"username": "code",
@@ -12,49 +21,83 @@
 ```
 
 ```json
-// response
+# response
 {
-    "id": 1,
-    "email": "code@code.com",
-    "username": "code",
-    "password": "$2b$12$jnGHY9fef.hqblgi8JvUee.nBPyy4lM8AlcHkGu8o1wsenbaQUIRa",
-    "updatedAt": "2019-09-24T02:58:18.990Z",
-    "createdAt": "2019-09-24T02:58:18.990Z"
+    "message": "USER SIGNUP SUCCESS!"
 }
 ```
 
 ### **[POST]** : `/auth/login`
 ```json
-// body
+# body
 {
 	"email": "code@code.com",
 	"password": "0000"
 }
 ```
 ```json
-// response
+# response
 {
-    "id": 1,
-    "email": "code@code.com",
-    "password": "$2b$12$jnGHY9fef.hqblgi8JvUee.nBPyy4lM8AlcHkGu8o1wsenbaQUIRa",
-    "username": "code",
-    "userImage": null,
-    "intro": null,
-    "createdAt": "2019-09-24T02:58:18.000Z",
-    "updatedAt": "2019-09-24T02:58:18.000Z"
+    "message": "USER LOGIN SUCCESS with TOKEN!",
+    "token": "$$$$$____ACCESS_TOKEN_____$$$$$"
 }
 ```
 
 ### **[GET]** : `/auth/logout`
 ```json
-// response
-Logout success
+# response
+{
+    "message": "LOGOUT SUCCESS"
+}
 ```
+
 ---
+
+## USER
+
+### **[GET]** : `/user`
+```json
+# response
+[
+    {
+        "id": 1,
+        "email": "code@code.com",
+        "password": "$2b$12$y4axtBdzuU5z9WqjFhgT..jSbOCDIq.j7hvtmwsiLSXh4TY2WT/0m",
+        "username": "code",
+        "userImage": null,
+        "intro": null,
+        "createdAt": "2019-09-29T03:24:23.000Z",
+        "updatedAt": "2019-09-29T03:24:23.000Z",
+        "likeMusics": [],
+        "likePosts": []
+    }
+]
+```
+
+### **[GET]** : `/user/:id`
+```json
+# response
+{
+    "id": 1,
+    "email": "code@code.com",
+    "password": "$2b$12$y4axtBdzuU5z9WqjFhgT..jSbOCDIq.j7hvtmwsiLSXh4TY2WT/0m",
+    "username": "code",
+    "userImage": null,
+    "intro": null,
+    "createdAt": "2019-09-29T03:24:23.000Z",
+    "updatedAt": "2019-09-29T03:24:23.000Z",
+    "likeMusics": [],
+    "likePosts": []
+}
+```
+
+---
+
 ## POSTS
+
 ### **[POST]** : `/post`
 ```json
-// body
+# body
 {
 	"title": "TEST1",
 	"content": "1234",
@@ -62,44 +105,25 @@ Logout success
 }
 ```
 ```json
-// response
+# response
 {
-    "id": 1,
-    "userId": 1,
-    "title": "TEST1",
-    "content": "1234",
-    "emotion": "happy",
-    "updatedAt": "2019-09-24T03:02:40.113Z",
-    "createdAt": "2019-09-24T03:02:40.113Z"
-}
-```
-
-### **[GET]** : `/post/:id`
-
-```json
-// GET /post/1
-// response
-{
-    "id": 1,
-    "title": "TEST1",
-    "content": "1234",
-    "userId": 1,
-    "emotion": "happy",
-    "createdAt": "2019-09-24T03:02:40.000Z",
-    "updatedAt": "2019-09-24T03:02:40.000Z",
-    "user": {
-        "email": "code@code.com",
-        "username": "code",
-        "userImage": null
+    "message": "CREATE POST SUCCESS",
+    "post": {
+        "id": 1,
+        "userId": 1,
+        "title": "TEST1",
+        "content": "1234",
+        "emotion": "happy",
+        "updatedAt": "2019-09-29T03:27:25.255Z",
+        "createdAt": "2019-09-29T03:27:25.255Z"
     }
 }
 ```
 
-## EMOTION
-### **[GET]** : `/emoji/:emoji`
+### **[GET]** : `/post/`
+
 ```json
-// GET /emoji/happy
-// response
+# response
 [
     {
         "id": 1,
@@ -107,8 +131,106 @@ Logout success
         "content": "1234",
         "userId": 1,
         "emotion": "happy",
-        "createdAt": "2019-09-24T03:02:40.000Z",
-        "updatedAt": "2019-09-24T03:02:40.000Z",
+        "createdAt": "2019-09-29T03:27:25.000Z",
+        "updatedAt": "2019-09-29T03:27:25.000Z",
+        "user": {
+            "email": "code@code.com",
+            "username": "code",
+            "userImage": null
+        },
+        "comments": [],
+        "likeUsers": []
+    }
+]
+```
+
+### **[PATCH]** : `/post/1`
+
+```json
+# body
+{
+	"title": "CHANGE TITLE",
+	"content": "CHANGED",
+	"emotion": "blank"
+}
+```
+
+```json
+# response
+{
+    "message": "POST UPDATED!"
+}
+```
+
+### **[GET]** : `/post/:id`
+
+```json
+# response ( id: 1 )
+{
+    "id": 1,
+    "title": "CHANGE TITLE",
+    "content": "CHANGED",
+    "userId": 1,
+    "emotion": "blank",
+    "createdAt": "2019-09-29T03:27:25.000Z",
+    "updatedAt": "2019-09-29T04:15:43.000Z",
+    "user": {
+        "email": "code@code.com",
+        "username": "code",
+        "userImage": null
+    },
+    "comments": [],
+    "likeUsers": []
+}
+```
+
+### **[POST]** : `/post/:id/like`
+
+```json
+# response
+{
+    "message": "LIKE POST!",
+    "post": {
+        "id": 1,
+        "userId": 1,
+        "postId": 1,
+        "updatedAt": "2019-09-29T03:51:06.467Z",
+        "createdAt": "2019-09-29T03:51:06.467Z"
+    }
+}
+```
+
+### **[DELETE]** : `/post/:id/like`
+
+```json
+# response
+{
+    "message": "UNLIKE POST!"
+}
+```
+
+### **[DELETE]** : `/post/:id`
+
+```json
+# response
+{
+    "message": "POST DELETED!"
+}
+```
+
+## EMOTION
+### **[GET]** : `/emoji/:emoji`
+```json
+# response ( emoji : happy)
+[
+    {
+        "id": 1,
+        "title": "TEST1",
+        "content": "1234",
+        "userId": 1,
+        "emotion": "happy",
+        "createdAt": "2019-09-29T03:27:25.000Z",
+        "updatedAt": "2019-09-29T03:27:25.000Z",
         "user": {
             "email": "code@code.com",
             "username": "code",
@@ -117,3 +239,194 @@ Logout success
     }
 ]
 ```
+
+---
+
+## MUSIC
+
+### **[POST]** : `/music`
+
+```json
+# body
+{
+	"title": "바람기억",
+    "thumbnail": "test01",
+    "artist": "나얼",
+    "playTime": "05:30",
+    "genre": "R&B",
+    "youtubeUrl": "https://www.youtube.com"
+}
+```
+
+```json
+# response
+{
+    "message": "MUSIC POST SUCCESS",
+    "music": {
+        "id": 1,
+        "title": "바람기억",
+        "thumbnail": "test01",
+        "artist": "나얼",
+        "playTime": "05:30",
+        "genre": "R&B",
+        "youtubeUrl": "https://www.youtube.com",
+        "updatedAt": "2019-09-29T04:19:43.868Z",
+        "createdAt": "2019-09-29T04:19:43.868Z"
+    }
+}
+```
+
+### **[GET]** : `/music`
+
+```json
+# response
+[
+    {
+        "id": 1,
+        "title": "바람기억",
+        "thumbnail": "test01",
+        "artist": "나얼",
+        "playTime": "05:30",
+        "genre": "R&B",
+        "likeUsers": []
+    }
+]
+```
+
+### **[GET]** : `/music/1`
+
+```json
+# response
+{
+    "id": 1,
+    "title": "바람기억",
+    "thumbnail": "test01",
+    "artist": "나얼",
+    "playTime": "05:30",
+    "genre": "R&B",
+    "likeUsers": []
+}
+```
+
+### **[POST]** : `music/:id/list`
+
+```json
+# body
+{
+	"playlistId": 1
+}
+```
+```json
+# response (id: 1)
+{
+    "message": "Add music in playlist",
+    "musicInList": {
+        "musicId": 1,
+        "playlistId": 1,
+        "updatedAt": "2019-09-29T04:25:52.291Z",
+        "createdAt": "2019-09-29T04:25:52.291Z"
+    }
+}
+```
+
+### **[POST]** : `music/:id/like`
+
+```json
+# response (id: 1)
+{
+    "message": "MUSIC LIKE!",
+    "like": {
+        "userId": 1,
+        "musicId": 1,
+        "updatedAt": "2019-09-29T04:28:37.389Z",
+        "createdAt": "2019-09-29T04:28:37.389Z"
+    }
+}
+```
+
+### **[DELETE]** : `music/:id/like`
+
+```json
+# response (id: 1)
+{
+    "message": "UNLIKE MUSIC!"
+}
+```
+
+---
+
+## PLAY_LIST
+
+## **[POST]** : /list/add
+
+```json
+# body
+{
+    "listName": "list1"
+}
+```
+
+```json
+# response
+{
+    "message": "Add a playlist",
+    "list": {
+        "id": 4,
+        "userId": 1,
+        "listName": "list1",
+        "updatedAt": "2019-09-29T04:40:24.233Z",
+        "createdAt": "2019-09-29T04:40:24.233Z"
+    }
+}
+```
+
+### **[GET]** : /list
+
+```json
+# response
+[
+    {
+        "id": 1,
+        "listName": "list"
+    }
+]
+```
+
+### **[GET]** : /list/:id/music
+
+```json
+# response (id: 1)
+[
+    {
+        "id": 1,
+        "userId": 1,
+        "listName": "list1",
+        "createdAt": "2019-09-29T04:35:39.000Z",
+        "updatedAt": "2019-09-29T04:35:39.000Z",
+        "musics": [
+            {
+                "id": 1,
+                "title": "바람기억",
+                "thumbnail": "test01",
+                "artist": "나얼",
+                "playTime": "05:30",
+                "genre": "R&B",
+                "MusicPlayList": {
+                    "musicId": 1,
+                    "playlistId": 1,
+                    "createdAt": "2019-09-29T04:36:36.000Z",
+                    "updatedAt": "2019-09-29T04:36:36.000Z"
+                }
+            }
+        ]
+    }
+]
+```
+
+### **[DELETE]** : /list/:id
+
+```json
+# response (id: 1)
+{
+    "message": "LIST DELETED!"
+}

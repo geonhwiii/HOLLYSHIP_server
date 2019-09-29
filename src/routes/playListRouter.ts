@@ -75,10 +75,16 @@ playListRouter.post('/add', async (req: Request, res: Response) => {
 playListRouter.delete('/:id', async (req: Request, res: Response) => {
   try {
     const userId = req.session.passport.user;
+    const exList = await PlayList.findOne({
+      where: { id: req.params.id, userId }
+    });
+    if (!exList) {
+      return res.status(409).json({ message: 'Undefined list' });
+    }
     await PlayList.destroy({
       where: { id: req.params.id, userId }
     });
-    res.send('LIST DELETED');
+    res.json({ message: 'LIST DELETED!' });
   } catch (err) {
     console.error(err);
     res.status(500).send('SERVER ERROR');

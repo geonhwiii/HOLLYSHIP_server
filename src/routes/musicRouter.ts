@@ -82,7 +82,7 @@ musicRouter.post(
         genre,
         youtubeUrl
       });
-      res.json({ message: 'MUSIC POST SUCCESS', music});
+      res.json({ message: 'MUSIC POST SUCCESS', music });
     } catch (err) {
       console.error(err);
       res.status(500).send('SERVER ERROR');
@@ -100,10 +100,10 @@ musicRouter.post(
       const { playlistId } = req.body;
       // TODO: Add Music in Playlist
       const musicInList = await MusicPlayList.create({
-        musicId: req.params.id,
+        musicId: +req.params.id,
         playlistId
       });
-      res.json({ message: 'Add music in playlist',musicInList});
+      res.json({ message: 'Add music in playlist', musicInList });
     } catch (err) {
       console.error(err);
       next(err);
@@ -119,7 +119,14 @@ musicRouter.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = req.session.passport.user;
-      const musicId = req.params.id;
+      const musicId = +req.params.id;
+      // TODO:
+      const exLike = await UserMusicsLike.findOne({
+        where: { userId, musicId }
+      });
+      if (exLike) {
+        return res.status(409).json({ message: 'Cannot like more than 1' });
+      }
       // TODO: Like (Create UserMusicsLike by user id and music id)
       const like = await UserMusicsLike.create({ userId, musicId });
       res.json({ message: 'MUSIC LIKE!', like });

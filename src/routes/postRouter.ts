@@ -87,7 +87,7 @@ postRouter.post('/', async (req, res) => {
 postRouter.post('/:id/like', async (req, res) => {
   try {
     const userId = req.session.passport.user;
-    const postId = req.params.id;
+    const postId = +req.params.id;
     // TODO: Find Post by userId
     const postUser = await Post.findOne({
       attributes: ['userId'],
