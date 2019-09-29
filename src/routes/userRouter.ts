@@ -46,7 +46,7 @@ userRouter.get(
           {
             model: UserPostLike,
             attributes: ['id', 'postId'],
-            include: [{ model: Post, attributes: ['title', 'createAt'] }]
+            include: [{ model: Post, attributes: ['title'] }]
           }
         ]
       });
