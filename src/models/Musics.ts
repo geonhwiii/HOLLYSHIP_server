@@ -1,3 +1,4 @@
+import { Comment } from './Comment';
 import { UserMusicsLike } from './UserMusicsLike';
 import { User } from './User';
 import { MusicPlayList } from './MusicPlayList';
@@ -10,7 +11,8 @@ import {
   AllowNull,
   ForeignKey,
   BelongsTo,
-  BelongsToMany
+  BelongsToMany,
+  HasMany
 } from 'sequelize-typescript';
 
 // TODO: Musics Table
@@ -47,4 +49,8 @@ export class Musics extends Model<Musics> {
   /* Music-User */
   @BelongsToMany(() => User, () => UserMusicsLike)
   likeUsers: User[];
+
+  /* Music-Comment */
+  @HasMany(() => Comment)
+  comments: Comment[];
 }
