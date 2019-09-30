@@ -430,3 +430,141 @@
 {
     "message": "LIST DELETED!"
 }
+```
+
+---
+
+## Comment
+
+### **[POST]** : /comment
+
+```json
+# body
+{
+	"comment": "안녕하세요",
+	"postId": 1,
+	"musicId": 1
+}
+```
+```json
+# response
+{ 
+    "message": "ADD COMMENT SUCCESS!"
+}
+```
+
+### **[GET]** : /comment
+
+```json
+[
+    {
+        "id": 1,
+        "comment": "안녕하세요",
+        "commentUsername": "apple",
+        "postId": 1,
+        "createdAt": "2019-09-30T04:40:52.000Z",
+        "users": [
+            {
+                "email": "apple@apple.com",
+                "username": "apple",
+                "userImage": null,
+                "UserComment": {
+                    "userId": 1,
+                    "commentId": 1,
+                    "createdAt": "2019-09-30T04:40:52.000Z",
+                    "updatedAt": "2019-09-30T04:40:52.000Z"
+                }
+            }
+        ],
+        "music": {
+            "id": 1,
+            "title": "바람기억",
+            "thumbnail": "image1",
+            "artist": "나얼",
+            "playTime": "05:30",
+            "genre": "ballad",
+            "youtubeUrl": null,
+            "createdAt": "2019-09-30T04:38:22.000Z",
+            "updatedAt": "2019-09-30T04:38:22.000Z"
+        }
+    }
+]
+```
+
+### **[DELETE]** : /comment/:id
+
+```json
+# response (id: 1)
+{
+    "message": "DELETE COMMENT SUCCESS!" 
+}
+```
+
+---
+
+## FOLLOW
+
+### **[POST** : /follow/add
+
+```json
+# body
+{
+	"username": "banana"
+}
+```
+
+```json
+{
+    "message": "Follow banana",
+    "follow": {
+        "id": 1,
+        "followerId": 1,
+        "followingId": 2,
+        "followerName": "apple",
+        "followingName": "banana",
+        "updatedAt": "2019-09-30T04:58:11.460Z",
+        "createdAt": "2019-09-30T04:58:11.460Z"
+    }
+}
+```
+
+### **[GET]** : /follow/following
+
+```json
+# response
+[
+    {
+        "id": 1,
+        "followingName": "banana"
+    }
+]
+```
+
+### **[GET]** : /follow/follower
+
+```json
+# response
+[
+    {
+        "id": 1,
+        "followerName": "apple",
+        "followingName": "banana"
+    }
+]
+```
+
+### **[DELETE]** : /follow
+
+```json
+# body
+{
+	"username": "banana"
+}
+```
+
+```json
+# response
+{
+    "message": "Unfollow User banana"
+}
+```

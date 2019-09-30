@@ -1,3 +1,4 @@
+import { Musics } from './Musics';
 import { Post } from './Post';
 import { UserComment } from './UserComment';
 import { User } from './User';
@@ -34,4 +35,12 @@ export class Comment extends Model<Comment> {
 
   @BelongsTo(() => Post)
   post: Post;
+
+  /* Comment-Music */
+  @ForeignKey(() => Musics)
+  @Column(DataType.INTEGER)
+  musicId: number;
+
+  @BelongsTo(() => Musics)
+  music: Musics;
 }

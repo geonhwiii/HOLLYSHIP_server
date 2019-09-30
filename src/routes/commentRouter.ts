@@ -1,3 +1,4 @@
+import { Musics } from './../models/Musics';
 import { UserComment } from './../models/UserComment';
 import { User } from './../models/User';
 import { Comment } from './../models/Comment';
@@ -15,7 +16,8 @@ commentRouter.get(
       // TODO: Find all comment with User data
       const comments = await Comment.findAll({
         include: [
-          { model: User, attributes: ['email', 'username', 'userImage'] }
+          { model: User, attributes: ['email', 'username', 'userImage'] },
+          { model: Musics }
         ],
         attributes: ['id', 'comment', 'commentUsername', 'postId', 'createdAt']
       });
@@ -39,11 +41,16 @@ commentRouter.post(
       const user = await User.findOne({ where: { id: userId } });
       const commentUsername = user.username;
       // TODO: Create Comment table
-      const { comment, postId } = req.body;
+      const { comment, postId, musicId } = req.body;
       if (!comment) {
         return res.status(403).json({ message: 'Comment cannot be null!' });
       }
-      const com = await Comment.create({ comment, postId, commentUsername });
+      const com = await Comment.create({
+        comment,
+        postId,
+        musicId,
+        commentUsername
+      });
       // TODO: Create Usercommnet table
       const commentId = com.id;
       const usercomment = await UserComment.create({ userId, commentId });
