@@ -568,3 +568,15 @@
     "message": "Unfollow User banana"
 }
 ```
+
+## Spotify Token
+
+### **[GET]** : /spotify/token
+
+```json
+# response
+{
+    "message": "SUCCESS",
+    "token": "*****ACCESS_TOKEN***"
+}
+```
