@@ -20,17 +20,10 @@ const getToken = async () => {
   }
 };
 
-// TODO: Read Token
-const readToken = async () => {
-  try {
-    const token = await spotifyApi.getAccessToken();
-    return token;
-  } catch (err) {
-    console.error(err.message);
-  }
-};
-
-spotifyRouter.get('/', async (req: Request, res: Response) => {
+/******************************************************************************
+ * ?                     GET Generate Token - "GET /spotify/token"
+ ******************************************************************************/
+spotifyRouter.get('/token', async (req: Request, res: Response) => {
   try {
     const token = await getToken();
     res.json({ message: 'SUCCESS', token });

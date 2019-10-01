@@ -25,6 +25,6 @@ router.use('/music', musicRouter);
 router.use('/list', playListRouter);
 router.use('/follow', followRouter);
 router.use('/comment', commentRouter);
-router.use('/token', spotifyRouter);
+router.use('/spotify', spotifyRouter);
 
 export default router;
