@@ -26,7 +26,8 @@
     "reflect-metadata": "^0.1.13",
     "request": "^2.88.0",
     "sequelize": "^5.18.4",
-    "sequelize-typescript": "^1.0.0"
+    "sequelize-typescript": "^1.0.0",
+    "spotify-web-api-node": "^4.0.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
@@ -42,6 +43,7 @@
     "@types/passport-local": "^1.0.33",
     "@types/query-string": "^6.3.0",
     "@types/request": "^2.48.3",
+    "@types/spotify-web-api-node": "^4.0.1",
     "@types/validator": "^10.11.3",
     "nodemon": "^1.19.2",
     "ts-node": "^8.4.1",

@@ -7,6 +7,7 @@ import musicRouter from './musicRouter';
 import playListRouter from './playListRouter';
 import followRouter from './followRouter';
 import commentRouter from './commentRouter';
+import spotifyRouter from './spotifyRouter';
 const router = Router();
 
 /******************************************************************************
@@ -24,5 +25,6 @@ router.use('/music', musicRouter);
 router.use('/list', playListRouter);
 router.use('/follow', followRouter);
 router.use('/comment', commentRouter);
+router.use('/spotify', spotifyRouter);
 
 export default router;
