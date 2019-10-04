@@ -16,15 +16,15 @@ postRouter.get('/', async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['email', 'username', 'userImage']
+          attributes: ['email', 'username', 'userImage'],
         },
         { model: Comment, attributes: ['comment', 'commentUsername'] },
         {
           model: UserPostLike,
           attributes: ['id', 'userId'],
-          include: [{ model: User, attributes: ['email', 'username'] }]
-        }
-      ]
+          include: [{ model: User, attributes: ['email', 'username'] }],
+        },
+      ],
     });
     return res.json(posts);
   } catch (err) {
@@ -43,15 +43,42 @@ postRouter.get('/:id', async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['email', 'username', 'userImage']
+          attributes: ['email', 'username', 'userImage'],
         },
         { model: Comment, attributes: ['comment', 'commentUsername'] },
         {
           model: UserPostLike,
           attributes: ['id', 'userId'],
-          include: [{ model: User, attributes: ['email', 'username'] }]
-        }
-      ]
+          include: [{ model: User, attributes: ['email', 'username'] }],
+        },
+      ],
+    });
+    return res.json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'SERVER ERROR' });
+  }
+});
+
+/******************************************************************************
+ * ?                      Get Posts by userId - "GET /post/:id/user"
+ ******************************************************************************/
+postRouter.get('/:userId/user', async (req, res) => {
+  try {
+    // TODO: Find a Post with User & Comment data
+    const posts = await Post.findOne({
+      where: { userId: +req.params.userId },
+      include: [
+        {
+          model: User,
+          attributes: ['email', 'username', 'userImage'],
+        },
+        {
+          model: UserPostLike,
+          attributes: ['id', 'userId'],
+          include: [{ model: User, attributes: ['email', 'username'] }],
+        },
+      ],
     });
     return res.json(posts);
   } catch (err) {
@@ -91,7 +118,7 @@ postRouter.post('/:id/like', async (req, res) => {
     // TODO: Find Post by userId
     const postUser = await Post.findOne({
       attributes: ['userId'],
-      where: { id: postId }
+      where: { id: postId },
     });
     // TODO: Check Current Login User is equal with PostUser
     if (userId !== postUser.userId) {
@@ -120,7 +147,7 @@ postRouter.patch('/:id', async (req, res) => {
     // TODO: Find Post by userId
     const postUser = await Post.findOne({
       attributes: ['userId'],
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     });
     if (currentUserId !== postUser.userId) {
       return res.status(409).send('User Info not match!');
@@ -147,7 +174,7 @@ postRouter.delete('/:id', async (req, res) => {
     // TODO: Find Post by userId
     const postUser = await Post.findOne({
       attributes: ['userId'],
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     });
     // TODO: Check Current Login User is equal with PostUser
     if (currentUserId !== postUser.userId) {
