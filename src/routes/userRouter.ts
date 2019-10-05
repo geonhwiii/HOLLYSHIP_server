@@ -1,3 +1,4 @@
+import { Follow } from './../models/Follow';
 import { UserPostLike } from './../models/UserPostLike';
 import { Post } from './../models/Post';
 import { Musics } from './../models/Musics';
@@ -30,7 +31,9 @@ const upload2 = multer();
 userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     // TODO: Find All User Info with Like Musics
-    const users = await User.findAll({
+    const userId = req.session.passport.user;
+    const users = await User.findOne({
+      where: { id: userId },
       include: [
         {
           model: Musics,
