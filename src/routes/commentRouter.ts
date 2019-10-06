@@ -17,9 +17,9 @@ commentRouter.get(
       const comments = await Comment.findAll({
         include: [
           { model: User, attributes: ['email', 'username', 'userImage'] },
-          { model: Musics }
+          { model: Musics },
         ],
-        attributes: ['id', 'comment', 'commentUsername', 'postId', 'createdAt']
+        attributes: ['id', 'comment', 'commentUsername', 'postId', 'createdAt'],
       });
       res.json(comments);
     } catch (err) {
@@ -49,7 +49,7 @@ commentRouter.post(
         comment,
         postId,
         musicId,
-        commentUsername
+        commentUsername,
       });
       // TODO: Create Usercommnet table
       const commentId = com.id;

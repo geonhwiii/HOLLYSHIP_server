@@ -93,9 +93,9 @@ postRouter.get('/:userId/user', async (req, res) => {
 });
 
 /******************************************************************************
- * ?                      Get Posts by me - "GET /post/my"
+ * ?                      Get Posts by me - "GET /post/user/my"
  ******************************************************************************/
-postRouter.get('/my', async (req, res) => {
+postRouter.get('/user/my', async (req, res) => {
   try {
     // TODO: Find a Post with User & Comment data
     const userId = req.session.passport.user;

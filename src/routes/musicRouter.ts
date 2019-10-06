@@ -20,9 +20,9 @@ musicRouter.get(
         include: [
           {
             model: User,
-            attributes: ['id', 'username', 'userImage']
-          }
-        ]
+            attributes: ['id', 'username', 'userImage'],
+          },
+        ],
       });
       res.json(musicData);
     } catch (err) {
@@ -46,9 +46,9 @@ musicRouter.get(
         include: [
           {
             model: User,
-            attributes: ['id', 'username', 'userImage']
-          }
-        ]
+            attributes: ['id', 'username', 'userImage'],
+          },
+        ],
       });
       res.json(musicData);
     } catch (err) {
@@ -66,21 +66,23 @@ musicRouter.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const {
+        id,
         title,
         thumbnail,
         artist,
         playTime,
         genre,
-        youtubeUrl
+        youtubeUrl,
       } = req.body;
       // TODO: Create a Music
       const music = await Musics.create({
+        id,
         title,
         thumbnail,
         artist,
         playTime,
         genre,
-        youtubeUrl
+        youtubeUrl,
       });
       res.json({ message: 'MUSIC POST SUCCESS', music });
     } catch (err) {
@@ -101,7 +103,7 @@ musicRouter.post(
       // TODO: Add Music in Playlist
       const musicInList = await MusicPlayList.create({
         musicId: +req.params.id,
-        playlistId
+        playlistId,
       });
       res.json({ message: 'Add music in playlist', musicInList });
     } catch (err) {
@@ -122,7 +124,7 @@ musicRouter.post(
       const musicId = +req.params.id;
       // TODO:
       const exLike = await UserMusicsLike.findOne({
-        where: { userId, musicId }
+        where: { userId, musicId },
       });
       if (exLike) {
         return res.status(409).json({ message: 'Cannot like more than 1' });
