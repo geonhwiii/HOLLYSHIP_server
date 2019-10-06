@@ -66,7 +66,7 @@ postRouter.get('/:id', async (req, res) => {
 postRouter.get('/:userId/user', async (req, res) => {
   try {
     // TODO: Find a Post with User & Comment data
-    const posts = await Post.findOne({
+    const posts = await Post.findAll({
       where: { userId: +req.params.userId },
       include: [
         {
@@ -81,6 +81,30 @@ postRouter.get('/:userId/user', async (req, res) => {
       ],
     });
     return res.json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'SERVER ERROR' });
+  }
+});
+
+/******************************************************************************
+ * ?                      Get Posts by me - "GET /post/my"
+ ******************************************************************************/
+postRouter.get('/my', async (req, res) => {
+  try {
+    // TODO: Find a Post with User & Comment data
+    const userId = req.session.passport.user;
+    const posts = await Post.findAll({
+      where: { userId },
+      include: [
+        {
+          model: UserPostLike,
+          attributes: ['id', 'userId'],
+          include: [{ model: User, attributes: ['email', 'username'] }],
+        },
+      ],
+    });
+    return res.json({ message: 'GET MY POSTS', posts });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'SERVER ERROR' });

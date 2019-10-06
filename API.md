@@ -148,6 +148,11 @@
     }
 ]
 ```
+### **[GET]** : `/post/:id`
+
+### **[GET]** : `/post/:userId/user`
+
+### **[GET]** : `/post/my`
 
 ### **[PATCH]** : `/post/1`
 
