@@ -1,3 +1,4 @@
+import { Musics } from './../models/Musics';
 import { UserPostLike } from './../models/UserPostLike';
 import { Comment } from './../models/Comment';
 import { User } from './../models/User';
@@ -45,7 +46,11 @@ postRouter.get('/:id', async (req, res) => {
           model: User,
           attributes: ['email', 'username', 'userImage'],
         },
-        { model: Comment, attributes: ['comment', 'commentUsername'] },
+        {
+          model: Comment,
+          attributes: ['comment', 'commentUsername'],
+          include: [{ model: Musics }],
+        },
         {
           model: UserPostLike,
           attributes: ['id', 'userId'],

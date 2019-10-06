@@ -12,12 +12,18 @@ import {
   ForeignKey,
   BelongsTo,
   BelongsToMany,
-  HasMany
+  HasMany,
+  Unique,
 } from 'sequelize-typescript';
 
 // TODO: Musics Table
 @Table
 export class Musics extends Model<Musics> {
+  @Unique
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  id: number;
+
   @AllowNull(false)
   @Column(DataType.STRING(30))
   title: string;
