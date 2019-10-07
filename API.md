@@ -91,11 +91,48 @@
 }
 ```
 
-### **[POST]** : `/user/img`
-유저 이미지 업로드
+### **[POST]** : `/user/upload`
 
-### **[PATCH]** : `/user/:id/`
-유저 정보 수정
+Should Post form-data to Body.
+
+```json
+{
+    "message": "UPLOAD SUCCESS",
+    "file": {
+        "fieldname": "photo",
+        "originalname": "bg.jpeg",
+        "encoding": "7bit",
+        "mimetype": "image/jpeg",
+        "size": 170718,
+        "bucket": "hollyship-bucket",
+        "key": "1570466697124.jpeg",
+        "acl": "public-read-write",
+        "contentType": "application/octet-stream",
+        "contentDisposition": null,
+        "storageClass": "STANDARD",
+        "serverSideEncryption": null,
+        "metadata": null,
+        "location": "https://hollyship-bucket.s3.ap-northeast-2.amazonaws.com/1570466697124.jpeg",
+        "etag": "\"5d73bcb3b55dcbd42bbe2833b974307c\""
+    }
+}
+```
+
+### **[PATCH]** : `/user`
+
+```json
+# body
+{
+    "userImage": "https://hollyship-bucket.s3.ap-northeast-2.amazonaws.com/1570466697124.jpeg"
+}
+```
+
+```json
+{
+    "message": "UPDATE USER IMAGE SUCCESS"
+}
+```
+
 ---
 
 ## POSTS
