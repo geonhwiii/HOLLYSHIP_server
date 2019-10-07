@@ -5,24 +5,33 @@ import { Musics } from './../models/Musics';
 import { Router, Request, Response, NextFunction } from 'express';
 import { User } from '../models/User';
 import multer from 'multer';
+import multerS3 from 'multer-s3';
 import path from 'path';
+import AWS from 'aws-sdk';
+
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: 'ap-northeast-2',
+});
 
 const userRouter = Router();
+
 const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, cb) {
-      cb(null, 'uploads/');
+  storage: multerS3({
+    s3,
+    bucket: process.env.AWS_BUCKET,
+    acl: 'public-read-write',
+    metadata(req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
     },
-    filename(req, file, cb) {
-      const ext = path.extname(file.originalname);
-      cb(
-        null,
-        path.basename(file.originalname, ext) + new Date().valueOf() + ext
-      );
+    key(req, file, cb) {
+      const extension = path.extname(file.originalname);
+      cb(null, Date.now().toString() + extension);
     },
   }),
-  limits: { fileSize: 10 * 1024 * 1024 },
 });
+
 const upload2 = multer();
 
 /******************************************************************************
@@ -80,15 +89,15 @@ userRouter.get(
 );
 
 /******************************************************************************
- * ?                     POST Upload User Image - "POST /user/img"
+ * ?                     POST Upload User Image - "POST /user/upload"
  ******************************************************************************/
 userRouter.post(
-  '/img',
-  upload.single('img'),
+  '/upload',
+  upload.single('photo'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       // TODO: Upload Image
-      res.json({ userImage: `/img/${req.file.filename}` });
+      res.json({ message: `/img/${req.file}` });
     } catch (err) {
       console.error(err);
       next(err);
