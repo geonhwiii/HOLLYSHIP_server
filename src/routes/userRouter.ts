@@ -26,7 +26,7 @@ const upload = multer({
 const upload2 = multer();
 
 /******************************************************************************
- * ?                      Get ALL User Info - "GET /user"
+ * ?                      Get My Info - "GET /user"
  ******************************************************************************/
 userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {

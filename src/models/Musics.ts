@@ -14,12 +14,14 @@ import {
   BelongsToMany,
   HasMany,
   Unique,
+  PrimaryKey,
 } from 'sequelize-typescript';
 
 // TODO: Musics Table
 @Table
 export class Musics extends Model<Musics> {
   @Unique
+  @PrimaryKey
   @AllowNull(false)
   @Column(DataType.INTEGER)
   id: number;
