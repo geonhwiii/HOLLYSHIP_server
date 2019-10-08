@@ -106,18 +106,20 @@ userRouter.post(
 );
 
 /******************************************************************************
- * ?                     PATCH Update User Info - "PATCH /user/:id"
+ * ?                     PATCH Update User Info - "PATCH /user/"
  ******************************************************************************/
 userRouter.patch(
-  '/:id',
-  upload2.none(),
+  '/',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       // TODO: Find a User Info
-      const user = await User.findByPk(req.params.id);
-      const { nickname, userImage, intro } = req.body;
-      await User.update({ userImage, intro }, { where: { id: user.id } });
-      res.json({ message: 'UPDATE SUCCESS', user });
+      const userId = req.session.passport.user;
+      const { userImage } = req.body;
+      const updateUser = await User.update(
+        { userImage },
+        { where: { id: userId } }
+      );
+      res.json({ message: 'UPDATE USER IMAGE SUCCESS' });
     } catch (err) {
       console.error(err);
       next(err);
