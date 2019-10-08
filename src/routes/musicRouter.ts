@@ -42,7 +42,7 @@ musicRouter.get(
       // TODO: Find a Music by id with User Info
       const musicData = await Musics.findOne({
         where: { id: req.params.id },
-        attributes: ['id', 'title', 'thumbnail', 'artist', 'playTime', 'genre'],
+        attributes: ['id', 'title', 'thumbnail', 'artist', 'playTime', 'genre', 'youtubeUrl'],
         include: [
           {
             model: User,
