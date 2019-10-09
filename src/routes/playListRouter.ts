@@ -1,3 +1,4 @@
+import { MusicPlayList } from './../models/MusicPlayList';
 import { Musics } from './../models/Musics';
 import { PlayList } from './../models/PlayList';
 import { Router, Request, Response } from 'express';
@@ -12,7 +13,7 @@ playListRouter.get('/', async (req: Request, res: Response) => {
     const userId = req.session.passport.user;
     const lists = await PlayList.findAll({
       where: { userId },
-      attributes: ['id', 'listName']
+      attributes: ['id', 'listName'],
     });
     res.json(lists);
   } catch (err) {
@@ -39,10 +40,11 @@ playListRouter.get('/:id/music', async (req: Request, res: Response) => {
             'thumbnail',
             'artist',
             'playTime',
-            'genre'
-          ]
-        }
-      ]
+            'genre',
+            'youtubeUrl',
+          ],
+        },
+      ],
     });
     res.json(musics);
   } catch (err) {
@@ -70,19 +72,39 @@ playListRouter.post('/add', async (req: Request, res: Response) => {
 });
 
 /******************************************************************************
+ * ?               DELETE Delete a music in PlayList - "DELETE /list/:id/music"
+ ******************************************************************************/
+playListRouter.delete('/:id/music', async (req: Request, res: Response) => {
+  try {
+    const listId = req.params.id;
+    const musicId = req.body;
+    const music = await MusicPlayList.destroy({
+      where: { musicId, listId },
+    });
+    if (!music) {
+      return res.status(409).json({ message: 'UNDEFINED MUSIC' });
+    }
+    return res.json({ message: 'MUSIC DELETED FROM LIST!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('SERVER ERROR');
+  }
+});
+
+/******************************************************************************
  * ?               DELETE Delete a PlayList - "DELETE /list/:id"
  ******************************************************************************/
 playListRouter.delete('/:id', async (req: Request, res: Response) => {
   try {
     const userId = req.session.passport.user;
     const exList = await PlayList.findOne({
-      where: { id: req.params.id, userId }
+      where: { id: req.params.id, userId },
     });
     if (!exList) {
       return res.status(409).json({ message: 'Undefined list' });
     }
     await PlayList.destroy({
-      where: { id: req.params.id, userId }
+      where: { id: req.params.id, userId },
     });
     res.json({ message: 'LIST DELETED!' });
   } catch (err) {
