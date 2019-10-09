@@ -76,10 +76,10 @@ playListRouter.post('/add', async (req: Request, res: Response) => {
  ******************************************************************************/
 playListRouter.delete('/:id/music', async (req: Request, res: Response) => {
   try {
-    const listId = req.params.id;
+    const playlistId = req.params.id;
     const musicId = req.body;
     const music = await MusicPlayList.destroy({
-      where: { musicId, listId },
+      where: { musicId, playlistId },
     });
     if (!music) {
       return res.status(409).json({ message: 'UNDEFINED MUSIC' });
