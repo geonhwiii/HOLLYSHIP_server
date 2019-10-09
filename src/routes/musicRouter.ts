@@ -16,7 +16,15 @@ musicRouter.get(
     try {
       // TODO: Find All Music data with User Info
       const musicData = await Musics.findAll({
-        attributes: ['id', 'title', 'thumbnail', 'artist', 'playTime', 'genre'],
+        attributes: [
+          'id',
+          'title',
+          'thumbnail',
+          'artist',
+          'playTime',
+          'genre',
+          'youtubeUrl',
+        ],
         include: [
           {
             model: User,
