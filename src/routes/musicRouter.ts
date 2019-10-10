@@ -122,6 +122,35 @@ musicRouter.post(
 );
 
 /******************************************************************************
+ * ?               DELETE Delete a music in PlayList - "DELETE /music/:id/list"
+ ******************************************************************************/
+musicRouter.delete('/:id/list', async (req: Request, res: Response) => {
+  try {
+    const musicId = +req.params.id;
+    const playlistId = req.body;
+    const music = await MusicPlayList.findOne({
+      where: {
+        musicId,
+        playlistId,
+      },
+    });
+    if (!music) {
+      return res.status(409).json({ message: 'UNDEFINED MUSIC' });
+    }
+    await MusicPlayList.destroy({
+      where: {
+        musicId,
+        playlistId,
+      },
+    });
+    return res.json({ message: 'MUSIC DELETED FROM LIST!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('SERVER ERROR');
+  }
+});
+
+/******************************************************************************
  * ?           POST Like music - "POST /music/:id/like"
  ******************************************************************************/
 musicRouter.post(

@@ -394,6 +394,21 @@ Should Post form-data to Body.
 ### **[DELETE]** : `music/:id/like`
 
 ```json
+{
+	"playlistId": 32
+}
+```
+
+```json
+# response (id: 7894)
+{
+    "message": "MUSIC DELETED FROM LIST!"
+}
+```
+
+### **[DELETE]** : `music/:id/like`
+
+```json
 # response (id: 1)
 {
     "message": "UNLIKE MUSIC!"
