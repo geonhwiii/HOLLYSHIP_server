@@ -97,7 +97,7 @@ userRouter.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       // TODO: Upload Image
-      res.json({ message: `/img/${req.file}` });
+      res.json({ file: req.file.location });
     } catch (err) {
       console.error(err);
       next(err);
