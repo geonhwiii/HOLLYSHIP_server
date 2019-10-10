@@ -72,26 +72,6 @@ playListRouter.post('/add', async (req: Request, res: Response) => {
 });
 
 /******************************************************************************
- * ?               DELETE Delete a music in PlayList - "DELETE /list/:id/music"
- ******************************************************************************/
-playListRouter.delete('/:id/music', async (req: Request, res: Response) => {
-  try {
-    const playlistId = req.params.id;
-    const musicId = req.body;
-    const music = await MusicPlayList.destroy({
-      where: { musicId, playlistId },
-    });
-    if (!music) {
-      return res.status(409).json({ message: 'UNDEFINED MUSIC' });
-    }
-    return res.json({ message: 'MUSIC DELETED FROM LIST!' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('SERVER ERROR');
-  }
-});
-
-/******************************************************************************
  * ?               DELETE Delete a PlayList - "DELETE /list/:id"
  ******************************************************************************/
 playListRouter.delete('/:id', async (req: Request, res: Response) => {
