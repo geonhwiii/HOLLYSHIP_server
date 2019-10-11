@@ -50,7 +50,15 @@ musicRouter.get(
       // TODO: Find a Music by id with User Info
       const musicData = await Musics.findOne({
         where: { id: req.params.id },
-        attributes: ['id', 'title', 'thumbnail', 'artist', 'playTime', 'genre', 'youtubeUrl'],
+        attributes: [
+          'id',
+          'title',
+          'thumbnail',
+          'artist',
+          'playTime',
+          'genre',
+          'youtubeUrl',
+        ],
         include: [
           {
             model: User,
@@ -127,7 +135,7 @@ musicRouter.post(
 musicRouter.delete('/:id/list', async (req: Request, res: Response) => {
   try {
     const musicId = +req.params.id;
-    const playlistId = req.body;
+    const { playlistId } = req.body;
     const music = await MusicPlayList.findOne({
       where: {
         musicId,

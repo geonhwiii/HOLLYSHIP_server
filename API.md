@@ -97,23 +97,8 @@ Should Post form-data to Body.
 
 ```json
 {
-    "message": "UPLOAD SUCCESS",
-    "file": {
-        "fieldname": "photo",
-        "originalname": "bg.jpeg",
-        "encoding": "7bit",
-        "mimetype": "image/jpeg",
-        "size": 170718,
-        "bucket": "hollyship-bucket",
-        "key": "1570466697124.jpeg",
-        "acl": "public-read-write",
-        "contentType": "application/octet-stream",
-        "contentDisposition": null,
-        "storageClass": "STANDARD",
-        "serverSideEncryption": null,
-        "metadata": null,
-        "location": "https://hollyship-bucket.s3.ap-northeast-2.amazonaws.com/1570466697124.jpeg",
-        "etag": "\"5d73bcb3b55dcbd42bbe2833b974307c\""
+    {
+    "file": "https://hollyship-bucket.s3.ap-northeast-2.amazonaws.com/1570729270259.png"
     }
 }
 ```
